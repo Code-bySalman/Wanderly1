@@ -12,6 +12,7 @@ function Hero() {
           </h1>
           <h4 className="font-normal text-[15px] md:text-[18px] text-gray-700 mt-2">
             Your AI-powered travel guide for effortless itineraries and unforgettable journeys. Plan less, explore more!
+            <br></br>
           </h4>
           <Link to={'/find_trip'}>
             <Button>Get Started, It's Free!!</Button>
