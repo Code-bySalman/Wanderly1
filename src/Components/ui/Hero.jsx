@@ -20,7 +20,7 @@ function Hero() {
           </Link>
         </div>
         <div className="md:w-1/2">
-          <img className="rounded-full mb-35 md:mb-0 h-[600px] md:h-[500px]" src="/hero1.png" alt="Hero Image" />
+          <img className="rounded-full mb-35 md:mb-0 h-[600px] md:h-[500px] mt-10" src="/hero1.png" alt="Hero Image" />
         </div>
       </div>
     </div>
