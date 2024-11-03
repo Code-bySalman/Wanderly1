@@ -98,7 +98,7 @@ const ImageWithFallback = ({ place }) => {
   }, [place]);
 
   return (
-    <div className='w-[150px] h-[150px] flex-shrink-0'>
+    <div className='w-[150px] h-[150px] flex-shrink-0 mt-3'>
       {isLoading ? (
         <div className='w-full h-full rounded-xl bg-gray-200 animate-pulse'></div>
       ) : (
