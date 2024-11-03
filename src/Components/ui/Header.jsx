@@ -55,10 +55,10 @@ function Header() {
     <>
       <div className='p-3 shadow-sm flex justify-between items-center px-5'>
         <Link to={'/'}>
-          <h1 className='font-extrabold text-[40px] text-blue-500 mr-[900px]'>Wanderly</h1>
+          <h1 className='font-extrabold text-[40px] text-blue-500 mr-[950px]'>Wanderly</h1>
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap justify-end">
           <Link to='/contact'>
             <Button variant="outline" className='rounded-full'>Contact</Button>
           </Link>
@@ -89,8 +89,8 @@ function Header() {
             <h3 className="text-center text-gray-600 mb-3">
               To create your trip, please sign in with Google.
             </h3>
-            <Button 
-              onClick={login} 
+            <Button
+              onClick={login}
               className="bg-black border-gray-300 flex items-center p-2 rounded-md hover:bg-black-600"
             >
               <FcGoogle className="text-2xl mr-2" />

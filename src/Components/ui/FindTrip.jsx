@@ -10,7 +10,7 @@ import { chatSession } from '/src/service/AIModal';
 import { FcGoogle } from "react-icons/fc";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader } from "/src/Components/dialog";
+import { Dialog, DialogContent, DialogHeader } from "/src/Components/dialog";
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
@@ -85,30 +85,25 @@ function FindTrip() {
   const SaveAiTrip = async (TripData, userChoice) => {
     try {
       setLoading(true);
-  
-      
+
       const tripPlan = TripData?.response?.text() || "";
-  
-      
+
       const updatedUserChoice = {
-        ...userChoice, 
+        ...userChoice,
         tripPlan,
       };
-  
+
       const tripDetails = {
         userChoice: updatedUserChoice,
-        hotelData: TripData?.hotelData || {}, 
+        hotelData: TripData?.hotelData || {},
       };
-  
-     
-  
+
       const docId = Date.now().toString();
       localStorage.setItem(`AiTrip_${docId}`, JSON.stringify(tripDetails));
-  
-      
+
       await navigate('/view_trip/' + docId);
       setTimeout(() => setLoading(false), 2000);
-  
+
     } catch (error) {
       console.error("Error saving trip data:", error);
     } finally {
@@ -159,72 +154,73 @@ function FindTrip() {
     })
     .catch((error) => console.error("Error fetching user info:", error));
   };
- 
 
   return (
     <>
       <Header />
       <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10 flex items-center flex-col">
-      <h2 className="text-center text-black font-extrabold text-[50px] gap-9">
-Create Your <span className="text-blue-600">Perfect Trip</span> in Just a Few Clicks
-</h2>
-<h4 className="text-center text-gray-600 text-[20px] mt-2">
-Enter your destination, budget, and preferences – <br />
-let us handle the details with personalized travel options tailored just for you!
-</h4>
+        <h2 className="text-center text-black font-extrabold text-[50px] gap-9">
+          Create Your <span className="text-blue-600">Perfect Trip</span> in Just a Few Clicks
+        </h2>
+        <h4 className="text-center text-gray-600 text-[20px] mt-2">
+          Enter your destination, budget, and preferences – <br />
+          let us handle the details with personalized travel options tailored just for you!
+        </h4>
 
-<NotificationBar message={notificationMessage} visible={notificationVisible} />
+        <NotificationBar message={notificationMessage} visible={notificationVisible} />
 
-<div className="mt-16 w-full flex flex-col gap-9">
-<div className="relative w-full lg:w-3/5 mx-auto mb-[20px]">
-  <h2 className="text-xl font-medium mb-2">Where are you planning to escape?</h2>
-  <input
-    type="text"
-    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 shadow-md bg-gray-100"
-    value={query}
-    onChange={handleInputChange}
-    placeholder="Enter your destination..."
-  />
-  {suggestions.length > 0 && (
-    <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
-      {suggestions.map((suggestion, index) => (
-        <li
-          key={index}
-          onClick={() => handleSuggestionClick(suggestion)}
-          className="p-3 cursor-pointer hover:bg-blue-50"
-        >
-          {suggestion.display_name}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
-</div>
+        <div className="mt-16 w-full flex flex-col gap-9">
+          <div className="relative w-full lg:w-3/5 mx-auto mb-[20px]">
+            <h2 className="text-xl font-medium mb-2">Where are you planning to escape?</h2>
+            <input
+              type="text"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 shadow-md bg-gray-100 " 
+              value={query}
+              onChange={handleInputChange}
+              placeholder="Enter your destination..."
+            />
+            {suggestions.length > 0 && (
+              <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    onClick={() => handleSuggestionClick(suggestion)}
+                    className="p-3 cursor-pointer hover:bg-blue-50"
+                  >
+                    {suggestion.display_name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
 
-<div>
-<h2 className="text-xl font-medium mb-2">How many days are you planning to travel?</h2>
-<Input 
-  placeholder="For example: 3 Days" 
-  type="number" 
-  className="w-[56vw] h-[50px] shadow-md bg-gray-100" 
-  value={travelDays} 
-  onChange={handleTravelDaysChange} 
-/>
-</div>
+        <div>
+          <h2 className="text-xl font-medium mb-2">How many days are you planning to travel?</h2>
+          <Input
+            placeholder="For example: 3 Days"
+            type="number"
+            className="w-[56vw] h-[50px] shadow-md bg-gray-100"
+            value={travelDays}
+            onChange={handleTravelDaysChange}
+          />
+        </div>
 
-<div className="ml-[-70px] mt-10">
-<h2 className="text-xl font-medium mb-2">What is your budget?</h2>
-<div className="grid grid-cols-3 gap-5 mt-5 items-center ml-20">
-  {SelectBudgetOptions.map((item, index) => (
-    <div 
-      key={index} 
-      className={`p-4 border rounded-lg shadow-lg cursor-pointer bg-white mr-[20px] ${
-        budget === item.title ? 'border-black shadow-2xl' : 'border-gray-300 shadow-md'
+        <div className="ml-[-70px] mt-10">
+          <h2 className="text-xl font-medium mb-2">What is your budget?</h2>
+          <div className="grid grid-cols-3 gap-5 mt-5 items-center ml-20">
+            {SelectBudgetOptions.map((item, index) => (
+              <div
+                key={index}
+                className={`p-4 border rounded-lg shadow-lg cursor-pointer bg-white mr-[20px] ${
+                  budget === item.title ? 'border-black shadow-2xl' : 'border-gray-300 shadow-md'
       }`}
+
+
       onClick={() => setBudget(item.title)}
     >
       <h2 className="text-4xl">{item.icon}</h2>
-      <h2 className="font-bold text-lg">{item.title}</h2>
+      <h2 className="font-normal md:font-bold text-sm md:text-lg">{item.title}</h2>
       <h2 className="text-sm text-gray-500">{item.desc}</h2>
     </div>
   ))}
@@ -242,8 +238,8 @@ let us handle the details with personalized travel options tailored just for you
       }`}
       onClick={() => setTravelOption(item.title)}
     >
-      <h2 className="text-4xl">{item.icon}</h2> {/* Retained icons as in original */}
-      <h2 className="font-bold text-lg">{item.title}</h2>
+      <h2 className="text-4xl">{item.icon}</h2> 
+      <h2 className="font-normal md:font-bold text-sm md:text-lg">{item.title}</h2>
       <h2 className="text-sm text-gray-500">{item.desc}</h2>
     </div>
   ))}

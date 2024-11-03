@@ -5,6 +5,7 @@ import axios from 'axios';
 const Hotels = ({ tripData }) => {
   const { userChoice } = tripData;
 
+  // Parse trip plan JSON and handle errors gracefully
   const tripPlanObject = (() => {
     try {
       return JSON.parse(userChoice?.tripPlan || '{}');
@@ -14,9 +15,10 @@ const Hotels = ({ tripData }) => {
     }
   })();
 
-  const hotels = tripPlanObject.hotel || [];
-  const [hotelImages, setHotelImages] = useState([]);
+  const hotels = tripPlanObject.hotel || []; // Extract hotels array or empty array if missing
+  const [hotelImages, setHotelImages] = useState([]); // Store hotel image URLs
 
+  // Fetch hotel images on component mount or when hotels change
   useEffect(() => {
     const fetchHotelImages = async () => {
       if (hotels.length === 0) return; // Check if hotels is empty
@@ -27,7 +29,7 @@ const Hotels = ({ tripData }) => {
             const response = await axios.get(`https://api.unsplash.com/search/photos`, {
               params: {
                 query: `${hotel.name}`,
-                client_id: import.meta.env.VITE_UNSPLASH_ACCES_KEY,
+                client_id: import.meta.env.VITE_UNSPLASH_ACCESS_KEY,
               },
             });
 
@@ -48,7 +50,7 @@ const Hotels = ({ tripData }) => {
 
   return (
     <div>
-      <h2 className="font-bold text-[30px] mt-5">Hotel Recommendation 🛏️</h2>
+      <h2 className="font-bold text-[30px] mt-5">Hotel Recommendation ️</h2>
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2 ">
         {hotels.length > 0 ? (
           hotels.map((hotel, index) => (
