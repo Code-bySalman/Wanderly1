@@ -5,8 +5,17 @@ import axios from 'axios';
 
 const DailyPlan = ({ tripData }) => {
   const { userChoice } = tripData;
-  const tripPlanObject = JSON.parse(userChoice.tripPlan);
-  const itinerary = tripPlanObject.itinerary;
+  const tripPlanObject = (() => {
+    try {
+      return JSON.parse(userChoice?.tripPlan || '{}');
+    } catch (error) {
+      console.error("Error parsing trip plan JSON:", error);
+      return {}; // Return an empty object if parsing fails
+    }
+  })();
+  const itinerary = tripPlanObject.itinerary || []; // Ensure itinerary is an array
+  
+  
 
   return (
     <div className='mt-5 max-w-4xl mx-auto'>
@@ -59,7 +68,7 @@ const ImageWithFallback = ({ place }) => {
       try {
         const response = await axios.get(`https://api.unsplash.com/search/photos`, {
           params: {
-            query: `${place.address}`,
+            query: `${place.place}`,
             client_id: import.meta.env.VITE_UNSPLASH_ACCES_KEY 
           }
         });

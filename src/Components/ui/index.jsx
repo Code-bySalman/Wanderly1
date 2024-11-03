@@ -11,9 +11,14 @@ function ViewTrip() {
   const [tripData, setTripData] = useState(null);
 
   useEffect(() => {
-    const savedTrip = localStorage.getItem(`AiTrip_${docId}`);
-    if (savedTrip) {
-      setTripData(JSON.parse(savedTrip));
+    try {
+      const savedTrip = localStorage.getItem(`AiTrip_${docId}`);
+      if (savedTrip) {
+        setTripData(JSON.parse(savedTrip));
+      }
+    } catch (error) {
+      console.error("Error parsing JSON from localStorage:", error);
+     
     }
   }, [docId]);
 

@@ -4,8 +4,16 @@ import axios from 'axios';
 
 const Hotels = ({ tripData }) => {
   const { userChoice } = tripData;
-  const tripPlanObject = JSON.parse(userChoice?.tripPlan || '{}');
-  const hotels = tripPlanObject?.hotel || []; // Ensure hotels is an array
+  
+  const tripPlanObject = (() => {
+    try {
+      return JSON.parse(userChoice?.tripPlan || '{}');
+    } catch (error) {
+      console.error("Error parsing trip plan JSON:", error);
+      return {}; // Return an empty object if parsing fails
+    }
+  })();
+  const hotels = tripPlanObject.hotel || [];
   const [hotelImages, setHotelImages] = useState([]);
 
   useEffect(() => {
