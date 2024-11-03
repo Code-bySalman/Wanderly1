@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from './button'; // Assuming Button component exists
+import { Button } from './button'; 
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -10,13 +10,11 @@ const DailyPlan = ({ tripData }) => {
       return JSON.parse(userChoice?.tripPlan || '{}');
     } catch (error) {
       console.error("Error parsing trip plan JSON:", error);
-      return {}; // Return an empty object if parsing fails
+      return {}; 
     }
   })();
-  const itinerary = tripPlanObject.itinerary || []; // Ensure itinerary is an array
+  const itinerary = tripPlanObject.itinerary || []; 
   
-  
-
   return (
     <div className='mt-5 max-w-4xl mx-auto'>
       <h2 className='font-bold text-xl text-center mb-4'>Places to Visit</h2>
@@ -56,37 +54,47 @@ const DailyPlan = ({ tripData }) => {
 };
 
 const ImageWithFallback = ({ place }) => {
-  const [imageUrl, setImageUrl] = useState('/infoimg.jpg'); // Default image
+  const [imageUrl, setImageUrl] = useState('/infoimg.jpg'); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchImage = async () => {
-      setIsLoading(true);
-      setError(null);
-
+    const fetchImage = async (query) => {
       try {
         const response = await axios.get(`https://api.unsplash.com/search/photos`, {
           params: {
-            query: `${place.place}`,
-            client_id: import.meta.env.VITE_UNSPLASH_ACCES_KEY 
-          }
+            query,
+            client_id: import.meta.env.VITE_UNSPLASH_ACCES_KEY,
+          },
         });
-
-        if (response.data.results.length > 0) {
-          setImageUrl(response.data.results[0].urls.regular);
-        } else {
-          console.warn('No image found for place:', place.place);
-        }
+        return response.data.results[0]?.urls?.regular || null;
       } catch (error) {
-        console.error('Error fetching image for place:', place.place, error);
-        setError('Failed to fetch image');
-      } finally {
-        setIsLoading(false);
+        console.error('Error fetching image for query:', query, error);
+        return null;
       }
     };
 
-    fetchImage();
+    const loadImage = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      
+      let image = await fetchImage(place.place);
+
+      if (!image && place.address) {
+        image = await fetchImage(place.address);
+      }
+
+      if (image) {
+        setImageUrl(image);
+      } else {
+        console.warn('No image found for place:', place.place || place.address);
+      }
+
+      setIsLoading(false);
+    };
+
+    loadImage();
   }, [place]);
 
   return (
@@ -101,3 +109,4 @@ const ImageWithFallback = ({ place }) => {
 };
 
 export default DailyPlan;
+

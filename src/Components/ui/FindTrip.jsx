@@ -86,28 +86,26 @@ function FindTrip() {
     try {
       setLoading(true);
   
-      // Extract only the AI-generated trip plan
+      
       const tripPlan = TripData?.response?.text() || "";
   
-      // Update userChoice with the generated trip plan
+      
       const updatedUserChoice = {
-        ...userChoice, // Keep existing user choices
+        ...userChoice, 
         tripPlan,
       };
   
       const tripDetails = {
         userChoice: updatedUserChoice,
-        hotelData: TripData?.hotelData || {}, // Keep hotel data if available
+        hotelData: TripData?.hotelData || {}, 
       };
   
-      // Log the generated trip to the console
-      console.log('Generated AI Trip:', tripDetails);
+     
   
-      // Save trip details in local storage
       const docId = Date.now().toString();
       localStorage.setItem(`AiTrip_${docId}`, JSON.stringify(tripDetails));
   
-      // Navigate to view the trip
+      
       await navigate('/view_trip/' + docId);
       setTimeout(() => setLoading(false), 2000);
   
