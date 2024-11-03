@@ -59,21 +59,20 @@ const ImageWithFallback = ({ place }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchImage = async (query) => {
+    const fetchImage = async (hotel) => {
       try {
         const response = await axios.get(`https://api.unsplash.com/search/photos`, {
           params: {
-            query,
-            client_id: import.meta.env.VITE_UNSPLASH_ACCES_KEY,
+            query: `${hotel.name} ${hotel.address}`, // Combine name and address
+            client_id: import.meta.env.VITE_UNSPLASH_ACCESS_KEY,
           },
         });
-        return response.data.results[0]?.urls?.regular || null;
+        return response.data.results[0]?.urls?.regular || '/infoimg.jpg';
       } catch (error) {
-        console.error('Error fetching image for query:', query, error);
-        return null;
+        console.error('Error fetching image for hotel:', hotel.name, error);
+        return '/infoimg.jpg'; // Return default image on error
       }
     };
-
     const loadImage = async () => {
       setIsLoading(true);
       setError(null);

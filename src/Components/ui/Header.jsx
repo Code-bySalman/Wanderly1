@@ -11,6 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
   const [openDialog, setOpenDialog] = useState(false);
@@ -40,15 +41,15 @@ function Header() {
       localStorage.setItem('user', JSON.stringify(res.data));
       setIsUserLoggedIn(true);
       setOpenDialog(false);
-      window.location.reload();
+      
     })
     .catch((error) => console.error("Error fetching user info:", error));
   };
-
+  const navigate = useNavigate();
   const handleLogout = () => {
     googleLogout();
     localStorage.clear();
-    window.location.reload();
+    navigate('/');
   };
 
   return (
