@@ -21,7 +21,7 @@ const DailyPlan = ({ tripData }) => {
             <div className='grid md:grid-cols-2 gap-5'>
               {day.plan?.map((place, index) => (
                 <Link
-                  key={place.id}
+                  key={index}
                   to={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.geoCoordinates)}`}
                   target='_blank'
                   className='hover:scale-105 transition-transform'
@@ -59,8 +59,8 @@ const ImageWithFallback = ({ place }) => {
       try {
         const response = await axios.get(`https://api.unsplash.com/search/photos`, {
           params: {
-            query: place.place,
-            client_id: import.meta.env.VITE_UNSPLASH_ACCESS_KEY // Replace with your Unsplash Access Key
+            query: `${place.address}`,
+            client_id: import.meta.env.VITE_UNSPLASH_ACCES_KEY 
           }
         });
 
