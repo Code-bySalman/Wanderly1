@@ -253,7 +253,7 @@ let us handle the details with personalized travel options tailored just for you
 </div>
 
 <div className="flex justify-center mt-8">
-  <Button className="h-[50px] w-[200px]" >
+  <Button className="h-[50px] w-[200px]" onClick={handleSaveTripDetails}>
     {loading ? (
       <AiOutlineLoading3Quarters className="animate-spin text-white" />
     ) : (
