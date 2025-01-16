@@ -7,20 +7,27 @@ const Hotels = ({ tripData }) => {
 
   const tripPlanObject = (() => {
     try {
+      console.log("Parsing trip plan JSON:", userChoice?.tripPlan);
       return JSON.parse(userChoice?.tripPlan || '{}');
     } catch (error) {
       console.error("Error parsing trip plan JSON:", error);
-      return {}; // Return an empty object if parsing fails
+      return {};
     }
   })();
 
   const hotels = tripPlanObject.hotel || [];
+  console.log("Hotels array:", hotels);
+
   const [hotelImages, setHotelImages] = useState([]);
 
   useEffect(() => {
-    const fetchHotelImages = async () => {
-      if (hotels.length === 0) return; // Check if hotels is empty
+    console.log("Fetching images for hotels...");
+    if (hotels.length === 0) {
+      console.warn("No hotels available to fetch images for.");
+      return;
+    }
 
+    const fetchHotelImages = async () => {
       const imageUrls = await Promise.all(
         hotels.map(async (hotel) => {
           try {
@@ -31,11 +38,10 @@ const Hotels = ({ tripData }) => {
               },
             });
 
-            const imageUrl = response.data.results[0]?.urls?.regular;
-            return imageUrl || '/infoimg.jpg'; // Default image if no result found
+            return response.data.results[0]?.urls?.regular || '/infoimg.jpg';
           } catch (error) {
-            console.error('Error fetching image for hotel:', hotel.name, error);
-            return '/infoimg.jpg'; // Return default image on error
+            console.error(`Error fetching image for hotel: ${hotel.name}`, error);
+            return '/infoimg.jpg';
           }
         })
       );
@@ -49,7 +55,7 @@ const Hotels = ({ tripData }) => {
   return (
     <div>
       <h2 className="font-bold text-[30px] mt-5">Hotel Recommendation 🛏️</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2 ">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-2">
         {hotels.length > 0 ? (
           hotels.map((hotel, index) => (
             <Link
@@ -58,7 +64,7 @@ const Hotels = ({ tripData }) => {
               target="_blank"
               className="hotel-card"
             >
-              <div className="w-full bg-blue-200 rounded-xl shadow-lg p-5 hover:scale-105 transition-all cursor-pointer flex flex-col h-[350px] ">
+              <div className="w-full bg-blue-200 rounded-xl shadow-lg p-5 hover:scale-105 transition-all cursor-pointer flex flex-col h-[350px]">
                 <img
                   src={hotelImages[index] || '/infoimg.jpg'}
                   className="w-full h-40 rounded-lg object-cover"
@@ -80,5 +86,4 @@ const Hotels = ({ tripData }) => {
     </div>
   );
 };
-
-export default Hotels;
+ export default   Hotels
